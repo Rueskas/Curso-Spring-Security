@@ -20,7 +20,7 @@ public class SwaggerConfig {
 	public Docket api() {
 		return new Docket(DocumentationType.SWAGGER_2)
 				.select()
-				.apis(RequestHandlerSelectors.basePackage("com.openwebinars.rest.controller"))
+				.apis(RequestHandlerSelectors.basePackage("com.iessanvicente.rest.controller"))
 				.paths(PathSelectors.any())
 				.build()
 				.apiInfo(apiInfo());
@@ -31,9 +31,9 @@ public class SwaggerConfig {
 
 		return new ApiInfoBuilder()
 			.title("API de ejemplo")
-			.description("API de ejemplo del curso Desarrollo de un API REST con Spring Boot de openwebinars")
+			.description("API de ejemplo del curso Desarrollo de un API REST con Spring Boot de iessanvicente")
 			.version("1.0")
-			.contact(new Contact("Luis Miguel López", "http://www.openwebinars.net", ""))
+			.contact(new Contact("Luis Miguel López", "http://www.iessanvicente.net", ""))
 			.build();
 		
 		

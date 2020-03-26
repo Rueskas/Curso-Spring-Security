@@ -1,18 +1,16 @@
-package com.iessanvicente.rest.config.security;
-
+package com.iessanvicente.rest.security;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
 
-import javax.annotation.PostConstruct;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,16 +20,16 @@ import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-public class CustomBasicAuthenticationEntryPoint extends BasicAuthenticationEntryPoint {
-
-	private final ObjectMapper mapper;
+public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 	
+	private final ObjectMapper mapper;
+
 	@Override
 	public void commence(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException authException) throws IOException, ServletException {
-		response.addHeader("WWW-Authenticate", "Basic realm='" + getRealmName() + "'");
+		
+		response.setStatus(HttpStatus.UNAUTHORIZED.value());
 		response.setContentType("application/json");
-		response.setStatus(HttpStatus.UNAUTHORIZED.value());		
 		
 		ApiError apiError = new ApiError(HttpStatus.UNAUTHORIZED, LocalDateTime.now(), authException.getMessage());
 		String strApiError = mapper.writeValueAsString(apiError);
@@ -41,11 +39,5 @@ public class CustomBasicAuthenticationEntryPoint extends BasicAuthenticationEntr
 		
 		
 	}
-
-	@PostConstruct
-	public void initRealname() {
-		setRealmName("iessanvicente.net");
-	}
-	
 
 }
